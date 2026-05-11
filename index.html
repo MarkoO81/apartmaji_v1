@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apartments Portorož — Slovenian Riviera</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --charcoal:#1e1e1e;
+      --teal:#3a9b8a;
+      --teal-light:#5db0a4;
+      --sand:#f7f3ee;
+      --stone:#8a8a7a;
+      --white:#fdfcfa;
+    }
+    html{scroll-behavior:smooth;}
+    body{font-family:'DM Sans',sans-serif;color:#1e1e1e;background:var(--white);}
+
+    /* ── NAV ── */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      background:var(--charcoal);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 3rem;height:80px;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .nav-logo{display:flex;flex-direction:column;align-items:center;gap:2px;}
+    .nav-logo-top{font-size:0.55rem;letter-spacing:0.35em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:300;}
+    .nav-logo-main{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:white;line-height:1;}
+    .nav-logo-rule{display:flex;align-items:center;gap:6px;width:100%;justify-content:center;margin-top:2px;}
+    .nav-logo-rule span{height:0.5px;flex:1;background:rgba(255,255,255,0.25);}
+    .nav-logo-rule small{font-size:0.45rem;letter-spacing:0.2em;color:rgba(255,255,255,0.35);text-transform:uppercase;}
+    nav ul{display:flex;gap:2.5rem;list-style:none;}
+    nav ul a{font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color 0.2s;}
+    nav ul a:hover{color:white;}
+    .nav-book{font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:white;background:var(--teal);padding:0.6rem 1.5rem;text-decoration:none;transition:background 0.2s;}
+    .nav-book:hover{background:var(--teal-light);}
+
+    /* ── HERO ── */
+    .hero{height:100vh;min-height:680px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+    .hero-img{
+      position:absolute;inset:0;
+      /* 📸 HERO PHOTO — replace with your own aerial/coast shot */
+      background-image:url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1800&q=80');
+      background-size:cover;background-position:center 50%;
+    }
+    .hero-img::after{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(to bottom,rgba(10,10,10,0.25) 0%,rgba(10,10,10,0.05) 35%,rgba(10,10,10,0.55) 72%,rgba(5,5,5,0.82) 100%);
+    }
+    .hero-content{position:relative;z-index:2;padding:0 4rem 5rem;max-width:900px;}
+    .hero-eyebrow{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;}
+    .hero-eyebrow-line{width:40px;height:0.5px;background:var(--teal-light);}
+    .hero-eyebrow-text{font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal-light);}
+    .hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,6.5vw,6rem);font-weight:300;line-height:1.0;color:white;margin-bottom:0.3rem;}
+    .hero h1 em{font-style:italic;color:rgba(255,255,255,0.8);font-weight:300;}
+    .hero-tagline{font-family:'Cormorant Garamond',serif;font-size:clamp(1rem,2vw,1.35rem);font-style:italic;font-weight:300;color:rgba(255,255,255,0.55);letter-spacing:0.05em;margin-bottom:2.5rem;}
+    .hero-actions{display:flex;gap:1rem;}
+    .btn-hero-primary{background:var(--teal);color:white;border:none;padding:0.9rem 2.25rem;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+    .btn-hero-primary:hover{background:var(--teal-light);}
+    .btn-hero-ghost{background:transparent;color:rgba(255,255,255,0.8);border:0.5px solid rgba(255,255,255,0.35);padding:0.9rem 2.25rem;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;}
+    .btn-hero-ghost:hover{border-color:white;color:white;}
+    .hero-stats{position:absolute;bottom:0;right:0;z-index:2;display:flex;background:rgba(10,10,10,0.72);backdrop-filter:blur(8px);border-top:0.5px solid rgba(255,255,255,0.08);border-left:0.5px solid rgba(255,255,255,0.08);}
+    .hero-stat{padding:1.25rem 2rem;border-right:0.5px solid rgba(255,255,255,0.08);text-align:center;}
+    .hero-stat:last-child{border-right:none;}
+    .hero-stat-num{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:600;color:white;line-height:1;margin-bottom:0.3rem;}
+    .hero-stat-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+    .scroll-hint{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;cursor:pointer;}
+    .scroll-hint span{font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.35);}
+    .scroll-arrow{width:1px;height:32px;background:linear-gradient(to bottom,rgba(255,255,255,0.45),transparent);animation:scrollpulse 1.8s ease-in-out infinite;}
+    @keyframes scrollpulse{0%,100%{opacity:0.3;transform:scaleY(0.8);}50%{opacity:1;transform:scaleY(1);}}
+
+    /* ── DIVIDER ── */
+    .section-divider{background:var(--charcoal);padding:2rem 4rem;display:flex;align-items:center;justify-content:center;gap:3rem;}
+    .divider-item{display:flex;align-items:center;gap:0.75rem;}
+    .divider-icon{width:32px;height:32px;border-radius:50%;border:0.5px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;}
+    .divider-icon svg{width:14px;height:14px;stroke:var(--teal-light);fill:none;stroke-width:1.5;}
+    .divider-text{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);}
+    .divider-sep{width:0.5px;height:24px;background:rgba(255,255,255,0.1);}
+
+    /* ── SECTIONS ── */
+    section{padding:6rem 4rem;}
+    .section-eyebrow{display:flex;align-items:center;gap:0.75rem;margin-bottom:1rem;}
+    .section-eyebrow-line{width:28px;height:0.5px;background:var(--teal);}
+    .section-eyebrow-text{font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--teal);}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:300;line-height:1.1;color:#1e1e1e;margin-bottom:1.25rem;}
+    .section-title em{font-style:italic;color:var(--teal);}
+
+    /* ── ABOUT ── */
+    .about{background:var(--white);}
+    .about-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;max-width:1200px;}
+    .about-text p{font-size:0.95rem;line-height:1.9;color:var(--stone);font-weight:300;margin-bottom:1.1rem;}
+    .about-pull{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-style:italic;font-weight:300;color:#1e1e1e;line-height:1.4;border-left:2px solid var(--teal);padding-left:1.5rem;margin:2rem 0;}
+    .about-visual{
+      position:relative;aspect-ratio:3/4;overflow:hidden;
+      /* 📸 LOCATION PHOTO — replace with your own Portorož/Piran shot */
+      background-image:url('https://images.unsplash.com/photo-1533105079780-92b9be482077?w=900&q=80');
+      background-size:cover;background-position:center;
+    }
+    .about-visual-label{position:absolute;bottom:0;left:0;right:0;background:rgba(10,10,10,0.72);backdrop-filter:blur(6px);padding:1.25rem 1.5rem;border-top:0.5px solid rgba(255,255,255,0.1);}
+    .about-visual-label strong{display:block;font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:400;color:white;margin-bottom:0.2rem;}
+    .about-visual-label span{font-size:0.65rem;letter-spacing:0.1em;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+    .about-corner{position:absolute;top:1.5rem;right:1.5rem;background:rgba(10,10,10,0.6);backdrop-filter:blur(4px);border:0.5px solid rgba(255,255,255,0.15);padding:0.5rem 0.9rem;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal-light);}
+
+    /* ── APARTMENTS ── */
+    .apartments{background:#f2eeea;}
+    .apt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3.5rem;border:0.5px solid rgba(30,30,30,0.12);}
+    .apt-card{background:var(--white);border-right:0.5px solid rgba(30,30,30,0.12);transition:background 0.3s;cursor:pointer;}
+    .apt-card:last-child{border-right:none;}
+    .apt-card:hover{background:#fdfaf7;}
+    .apt-img{
+      aspect-ratio:16/10;position:relative;overflow:hidden;
+      display:flex;align-items:flex-end;padding:1rem;
+      background-size:cover;background-position:center;
+    }
+    .apt-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.5) 0%,transparent 55%);pointer-events:none;}
+    .apt-img-badge{position:relative;z-index:1;background:var(--charcoal);color:rgba(255,255,255,0.85);padding:0.3rem 0.75rem;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;}
+
+    /* 📸 APARTMENT PHOTOS — replace these 3 URLs with your own apartment interior shots */
+    .apt-img.c1{background-image:url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=75');}
+    .apt-img.c2{background-image:url('https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=800&q=75');}
+    .apt-img.c3{background-image:url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=75');}
+
+    .apt-body{padding:1.75rem 1.5rem;}
+    .apt-num{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem;}
+    .apt-name{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:#1e1e1e;margin-bottom:0.6rem;line-height:1.1;}
+    .apt-desc{font-size:0.82rem;line-height:1.75;color:var(--stone);font-weight:300;margin-bottom:1.25rem;}
+    .apt-specs{display:flex;gap:1.5rem;padding:1rem 0;border-top:0.5px solid rgba(30,30,30,0.1);border-bottom:0.5px solid rgba(30,30,30,0.1);margin-bottom:1.25rem;}
+    .apt-spec{font-size:0.72rem;color:var(--stone);}
+    .apt-spec strong{display:block;font-size:0.82rem;color:#1e1e1e;font-weight:500;margin-bottom:0.1rem;}
+    .apt-footer{display:flex;justify-content:space-between;align-items:center;}
+    .apt-price-label{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--stone);margin-bottom:0.2rem;}
+    .apt-price-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;color:#1e1e1e;}
+    .apt-price-unit{font-size:0.72rem;color:var(--stone);}
+    .btn-apt{background:var(--charcoal);color:white;border:none;padding:0.6rem 1.25rem;font-family:'DM Sans',sans-serif;font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;}
+    .btn-apt:hover{background:var(--teal);}
+
+    /* ── AMENITIES ── */
+    .amenities{background:var(--charcoal);}
+    .amenities .section-title{color:white;}
+    .amenities .section-eyebrow-line{background:var(--teal-light);}
+    .amenities .section-eyebrow-text{color:var(--teal-light);}
+    .amen-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:3.5rem;border:0.5px solid rgba(255,255,255,0.08);}
+    .amen-item{padding:2rem 1.75rem;border-right:0.5px solid rgba(255,255,255,0.08);border-bottom:0.5px solid rgba(255,255,255,0.08);transition:background 0.2s;}
+    .amen-item:hover{background:rgba(255,255,255,0.03);}
+    .amen-icon{width:40px;height:40px;border:0.5px solid rgba(58,155,138,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;}
+    .amen-icon svg{width:18px;height:18px;stroke:var(--teal-light);fill:none;stroke-width:1.5;}
+    .amen-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:white;margin-bottom:0.5rem;}
+    .amen-desc{font-size:0.78rem;color:rgba(255,255,255,0.4);line-height:1.7;font-weight:300;}
+
+    /* ── PHOTO BREAK ── */
+    .photo-break{
+      height:480px;position:relative;overflow:hidden;
+      /* 📸 FULL-WIDTH BREAK PHOTO — replace with your own beach/aerial shot */
+      background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1800&q=80');
+      background-size:cover;background-position:center 60%;
+    }
+    .photo-break::after{content:'';position:absolute;inset:0;background:rgba(5,5,5,0.42);}
+    .photo-break-content{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;}
+    .photo-break-label{font-size:0.62rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--teal-light);margin-bottom:1rem;}
+    .photo-break-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:300;color:white;font-style:italic;line-height:1.15;}
+
+    /* ── CONTACT ── */
+    .contact{background:var(--white);}
+    .contact-inner{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;max-width:1100px;}
+    .contact-left p{font-size:0.95rem;line-height:1.85;color:var(--stone);font-weight:300;margin-bottom:2rem;}
+    .contact-details{display:flex;flex-direction:column;gap:1.5rem;}
+    .contact-detail-label{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--teal);margin-bottom:0.3rem;}
+    .contact-detail-val{font-size:0.95rem;color:#1e1e1e;font-weight:300;}
+    .contact-form-title{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;color:#1e1e1e;margin-bottom:2rem;}
+    .form-group{margin-bottom:1.5rem;}
+    .form-label{display:block;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem;}
+    .form-input{width:100%;background:transparent;border:none;border-bottom:0.5px solid rgba(30,30,30,0.2);padding:0.6rem 0;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:300;color:#1e1e1e;outline:none;transition:border-color 0.2s;}
+    .form-input:focus{border-color:var(--teal);}
+    .form-input::placeholder{color:rgba(30,30,30,0.3);}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+    .btn-submit{background:var(--charcoal);color:white;border:none;padding:1rem 2.5rem;font-family:'DM Sans',sans-serif;font-size:0.72rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:background 0.2s;margin-top:0.5rem;}
+    .btn-submit:hover{background:var(--teal);}
+
+    /* ── FOOTER ── */
+    footer{background:var(--charcoal);padding:2rem 4rem;display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid rgba(255,255,255,0.06);}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:white;}
+    .footer-logo span{color:var(--teal-light);}
+    footer p{font-size:0.65rem;letter-spacing:0.08em;color:rgba(255,255,255,0.3);}
+    .footer-links{display:flex;gap:2rem;}
+    .footer-links a{font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.2s;}
+    .footer-links a:hover{color:rgba(255,255,255,0.7);}
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo">
+      <div class="nav-logo-top">Apartmaji</div>
+      <div class="nav-logo-main">Portorož</div>
+      <div class="nav-logo-rule"><span></span><small>Slovenska Obala</small><span></span></div>
+    </div>
+    <ul>
+      <li><a href="#apartments">Apartments</a></li>
+      <li><a href="#about">Location</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a class="nav-book" href="#contact">Book a stay</a>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-img"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-line"></div>
+        <div class="hero-eyebrow-text">Slovenian Riviera · Adriatic Coast</div>
+      </div>
+      <h1>Where the sea<br>becomes <em>home.</em></h1>
+      <div class="hero-tagline">Three apartments. One unforgettable coast.</div>
+      <div class="hero-actions">
+        <button class="btn-hero-primary" onclick="document.getElementById('apartments').scrollIntoView({behavior:'smooth'})">View apartments</button>
+        <button class="btn-hero-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Discover Portorož</button>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Apartments</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">200m</div><div class="hero-stat-label">To the beach</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">4.9</div><div class="hero-stat-label">Guest rating</div></div>
+    </div>
+    <div class="scroll-hint" onclick="document.querySelector('.section-divider').scrollIntoView({behavior:'smooth'})">
+      <span>Scroll</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+
+  <!-- DIVIDER STRIP -->
+  <div class="section-divider">
+    <div class="divider-item">
+      <div class="divider-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div>
+      <div class="divider-text">Private terraces</div>
+    </div>
+    <div class="divider-sep"></div>
+    <div class="divider-item">
+      <div class="divider-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
+      <div class="divider-text">Sea views</div>
+    </div>
+    <div class="divider-sep"></div>
+    <div class="divider-item">
+      <div class="divider-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div class="divider-text">Piran 2 km</div>
+    </div>
+    <div class="divider-sep"></div>
+    <div class="divider-item">
+      <div class="divider-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <div class="divider-text">Free parking</div>
+    </div>
+    <div class="divider-sep"></div>
+    <div class="divider-item">
+      <div class="divider-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+      <div class="divider-text">Superhost rated</div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div class="about-text">
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <div class="section-eyebrow-text">The location</div>
+        </div>
+        <h2 class="section-title">Port of Roses,<br><em>port of peace.</em></h2>
+        <p>Portorož — "Port of Roses" — is Slovenia's crown jewel on the Adriatic. A town of warm stone, pine promenades, and a Mediterranean pace that invites you to slow down and breathe.</p>
+        <blockquote class="about-pull">"The most beautiful stretch of coast you've never heard of — until now."</blockquote>
+        <p>Our apartments sit just 200 metres from the beach, within easy reach of the old Venetian town of Piran, the salt pans of Sečovlje, and the finest seafood restaurants on the Slovenian coast.</p>
+      </div>
+      <div class="about-visual">
+        <div class="about-corner">45.51°N · 13.59°E</div>
+        <div class="about-visual-label">
+          <strong>Portorož, Slovenia</strong>
+          <span>Slovenian Riviera · Adriatic Sea</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- APARTMENTS -->
+  <section class="apartments" id="apartments">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <div class="section-eyebrow-text">Our apartments</div>
+    </div>
+    <h2 class="section-title">Choose your <em>retreat</em></h2>
+    <div class="apt-grid">
+
+      <div class="apt-card">
+        <div class="apt-img c1"><div class="apt-img-badge">Sea view</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 01</div>
+          <div class="apt-name">Studio Mare</div>
+          <div class="apt-desc">Light-filled studio with a private terrace overlooking the bay. Ideal for couples seeking a serene coastal escape.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>2</strong>Guests</div>
+            <div class="apt-spec"><strong>32 m²</strong>Area</div>
+            <div class="apt-spec"><strong>1</strong>Bedroom</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€95</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="apt-card">
+        <div class="apt-img c2"><div class="apt-img-badge">Garden access</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 02</div>
+          <div class="apt-name">Apartment Bora</div>
+          <div class="apt-desc">Spacious two-bedroom apartment with private garden. Perfect for families or small groups wanting space and comfort.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>4</strong>Guests</div>
+            <div class="apt-spec"><strong>58 m²</strong>Area</div>
+            <div class="apt-spec"><strong>2</strong>Bedrooms</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€145</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="apt-card">
+        <div class="apt-img c3"><div class="apt-img-badge">Panoramic</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 03</div>
+          <div class="apt-name">Penthouse Piran</div>
+          <div class="apt-desc">Top-floor apartment with sweeping views of the Adriatic and Piran's rooftops. The ultimate coastal retreat.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>4</strong>Guests</div>
+            <div class="apt-spec"><strong>72 m²</strong>Area</div>
+            <div class="apt-spec"><strong>2</strong>Bedrooms</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€195</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- AMENITIES -->
+  <section class="amenities" id="amenities">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <div class="section-eyebrow-text">What's included</div>
+    </div>
+    <h2 class="section-title">Every comfort,<br><em>thoughtfully provided.</em></h2>
+    <div class="amen-grid">
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><path d="M3 12h18M3 6l9-3 9 3M3 18l9 3 9-3"/></svg></div>
+        <div class="amen-title">Beach access</div>
+        <div class="amen-desc">Reserved beach loungers for our guests, just 200m from the door.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg></div>
+        <div class="amen-title">Private terrace</div>
+        <div class="amen-desc">Each apartment has its own outdoor space to enjoy the Mediterranean sun.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
+        <div class="amen-title">High-speed Wi-Fi</div>
+        <div class="amen-desc">Fibre connection throughout — work remotely or stream with ease.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div class="amen-title">Full kitchen</div>
+        <div class="amen-desc">Everything you need to cook fresh produce from the morning market.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg></div>
+        <div class="amen-title">Espresso machine</div>
+        <div class="amen-desc">Premium Italian espresso with a selection of specialty coffees.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <div class="amen-title">Free parking</div>
+        <div class="amen-desc">Secure private parking on site — a rare luxury in Portorož.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3H14z"/><path d="M7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3"/></svg></div>
+        <div class="amen-title">Self check-in</div>
+        <div class="amen-desc">Smart lock entry — flexible arrival, no waiting, no schedules.</div>
+      </div>
+      <div class="amen-item">
+        <div class="amen-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20v-2a6 6 0 0112 0v2"/></svg></div>
+        <div class="amen-title">Personal host</div>
+        <div class="amen-desc">Local tips, restaurant bookings, anything you need — always available.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHOTO BREAK -->
+  <div class="photo-break">
+    <div class="photo-break-content">
+      <div class="photo-break-label">Portorož · Slovenia</div>
+      <div class="photo-break-title">Steps from the sea,<br>a world away from ordinary.</div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <div class="section-eyebrow">
+          <div class="section-eyebrow-line"></div>
+          <div class="section-eyebrow-text">Get in touch</div>
+        </div>
+        <h2 class="section-title">Ready for your<br><em>coastal escape?</em></h2>
+        <p>Whether you're planning a summer week or a quiet winter retreat, we'd love to help you find the perfect stay in Portorož.</p>
+        <div class="contact-details">
+          <div>
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-val">hello@apartmentsportoroz.si</div>
+          </div>
+          <div>
+            <div class="contact-detail-label">Phone</div>
+            <div class="contact-detail-val">+386 41 000 000</div>
+          </div>
+          <div>
+            <div class="contact-detail-label">Address</div>
+            <div class="contact-detail-val">Portorož 6320, Slovenia</div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-form-title">Send an enquiry</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First name</label>
+            <input class="form-input" type="text" placeholder="Ana">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last name</label>
+            <input class="form-input" type="text" placeholder="Novak">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email address</label>
+          <input class="form-input" type="email" placeholder="ana@example.com">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Check-in</label>
+            <input class="form-input" type="text" placeholder="dd / mm / yyyy">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Check-out</label>
+            <input class="form-input" type="text" placeholder="dd / mm / yyyy">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <input class="form-input" type="text" placeholder="Which apartment are you interested in?">
+        </div>
+        <button class="btn-submit">Send enquiry</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Apartments <span>Portorož</span></div>
+    <div class="footer-links">
+      <a href="#">Privacy</a>
+      <a href="#">Instagram</a>
+      <a href="#">Airbnb</a>
+    </div>
+    <p>© 2026 Apartments Portorož</p>
+  </footer>
+
+</body>
+</html>
