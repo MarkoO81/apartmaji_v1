@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
   <style>
     *{box-sizing:border-box;margin:0;padding:0;}
     :root{
@@ -105,8 +106,9 @@
     /* ── APARTMENTS ── */
     .apartments{background:#f2eeea;}
     .apt-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3.5rem;border:0.5px solid rgba(30,30,30,0.12);}
-    .apt-card{background:var(--white);border-right:0.5px solid rgba(30,30,30,0.12);transition:background 0.3s;cursor:pointer;}
-    .apt-card:last-child{border-right:none;}
+    .apt-card{background:var(--white);border-right:0.5px solid rgba(30,30,30,0.12);border-bottom:0.5px solid rgba(30,30,30,0.12);transition:background 0.3s;cursor:pointer;}
+    .apt-card:nth-child(3n){border-right:none;}
+    .apt-card:nth-last-child(-n+3){border-bottom:none;}
     .apt-card:hover{background:#fdfaf7;}
     .apt-img{
       aspect-ratio:16/10;position:relative;overflow:hidden;
@@ -116,10 +118,20 @@
     .apt-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.5) 0%,transparent 55%);pointer-events:none;}
     .apt-img-badge{position:relative;z-index:1;background:var(--charcoal);color:rgba(255,255,255,0.85);padding:0.3rem 0.75rem;font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;}
 
-    /* 📸 APARTMENT PHOTOS — replace these 3 URLs with your own apartment interior shots */
     .apt-img.c1{background-image:url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=75');}
     .apt-img.c2{background-image:url('https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=800&q=75');}
     .apt-img.c3{background-image:url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=75');}
+    .apt-img.c4{background-image:url('https://images.unsplash.com/photo-1484154218962-a197022b5858?w=800&q=75');}
+    .apt-img.c5{background-image:url('https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=75');}
+    .apt-img.c6{background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=75');}
+
+    /* ── MAP ── */
+    .map-section{background:var(--white);}
+    .map-section .section-title{margin-bottom:2.5rem;}
+    #apt-map{height:480px;width:100%;border:0.5px solid rgba(30,30,30,0.12);}
+    .leaflet-popup-content-wrapper{border-radius:0;font-family:'DM Sans',sans-serif;box-shadow:0 4px 24px rgba(0,0,0,0.12);}
+    .map-popup-name{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#1e1e1e;margin-bottom:2px;}
+    .map-popup-detail{font-size:0.75rem;color:var(--stone);}
 
     .apt-body{padding:1.75rem 1.5rem;}
     .apt-num{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--stone);margin-bottom:0.5rem;}
@@ -198,6 +210,7 @@
       <li><a href="#apartments">Apartments</a></li>
       <li><a href="#about">Location</a></li>
       <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#map">Map</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
     <a class="nav-book" href="#contact">Book a stay</a>
@@ -212,14 +225,14 @@
         <div class="hero-eyebrow-text">Slovenian Riviera · Adriatic Coast</div>
       </div>
       <h1>Where the sea<br>becomes <em>home.</em></h1>
-      <div class="hero-tagline">Three apartments. One unforgettable coast.</div>
+      <div class="hero-tagline">Six apartments. One unforgettable coast.</div>
       <div class="hero-actions">
         <button class="btn-hero-primary" onclick="document.getElementById('apartments').scrollIntoView({behavior:'smooth'})">View apartments</button>
         <button class="btn-hero-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">Discover Portorož</button>
       </div>
     </div>
     <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-num">3</div><div class="hero-stat-label">Apartments</div></div>
+      <div class="hero-stat"><div class="hero-stat-num">6</div><div class="hero-stat-label">Apartments</div></div>
       <div class="hero-stat"><div class="hero-stat-num">200m</div><div class="hero-stat-label">To the beach</div></div>
       <div class="hero-stat"><div class="hero-stat-num">4.9</div><div class="hero-stat-label">Guest rating</div></div>
     </div>
@@ -352,7 +365,80 @@
         </div>
       </div>
 
+      <div class="apt-card">
+        <div class="apt-img c4"><div class="apt-img-badge">Ground floor</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 04</div>
+          <div class="apt-name">Apartment Saline</div>
+          <div class="apt-desc">Quiet ground-floor apartment with a private garden terrace, steps from the famous Sečovlje salt pans and cycling paths.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>3</strong>Guests</div>
+            <div class="apt-spec"><strong>45 m²</strong>Area</div>
+            <div class="apt-spec"><strong>1</strong>Bedroom</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€120</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="apt-card">
+        <div class="apt-img c5"><div class="apt-img-badge">Sea view</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 05</div>
+          <div class="apt-name">Suite Adriatico</div>
+          <div class="apt-desc">An intimate top-floor suite with floor-to-ceiling windows and a juliet balcony framing the open Adriatic. Perfect for couples.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>2</strong>Guests</div>
+            <div class="apt-spec"><strong>40 m²</strong>Area</div>
+            <div class="apt-spec"><strong>1</strong>Bedroom</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€155</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="apt-card">
+        <div class="apt-img c6"><div class="apt-img-badge">Family</div></div>
+        <div class="apt-body">
+          <div class="apt-num">Apartment 06</div>
+          <div class="apt-name">Villa Ostanek</div>
+          <div class="apt-desc">Our largest and most private retreat — a three-bedroom villa with its own garden, al-fresco dining terrace, and sea glimpses.</div>
+          <div class="apt-specs">
+            <div class="apt-spec"><strong>6</strong>Guests</div>
+            <div class="apt-spec"><strong>95 m²</strong>Area</div>
+            <div class="apt-spec"><strong>3</strong>Bedrooms</div>
+          </div>
+          <div class="apt-footer">
+            <div>
+              <div class="apt-price-label">From</div>
+              <div><span class="apt-price-num">€245</span><span class="apt-price-unit"> / night</span></div>
+            </div>
+            <button class="btn-apt" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Enquire</button>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </section>
+
+  <!-- MAP -->
+  <section class="map-section" id="map">
+    <div class="section-eyebrow">
+      <div class="section-eyebrow-line"></div>
+      <div class="section-eyebrow-text">Find us</div>
+    </div>
+    <h2 class="section-title">All six apartments,<br><em>on the map.</em></h2>
+    <div id="apt-map"></div>
   </section>
 
   <!-- AMENITIES -->
@@ -485,5 +571,39 @@
     <p>© 2026 Apartments Portorož</p>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    var map = L.map('apt-map').setView([45.5138, 13.5928], 15);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      maxZoom: 19
+    }).addTo(map);
+
+    var orange = L.divIcon({
+      className: '',
+      html: '<div style="width:14px;height:14px;background:#f99a1e;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.35);"></div>',
+      iconSize: [14, 14],
+      iconAnchor: [7, 7],
+      popupAnchor: [0, -10]
+    });
+
+    var apts = [
+      { latlng: [45.5130, 13.5920], num: '01', name: 'Studio Mare',      detail: '2 guests · 32 m² · from €95/night' },
+      { latlng: [45.5135, 13.5932], num: '02', name: 'Apartment Bora',   detail: '4 guests · 58 m² · from €145/night' },
+      { latlng: [45.5142, 13.5940], num: '03', name: 'Penthouse Piran',  detail: '4 guests · 72 m² · from €195/night' },
+      { latlng: [45.5125, 13.5910], num: '04', name: 'Apartment Saline', detail: '3 guests · 45 m² · from €120/night' },
+      { latlng: [45.5148, 13.5925], num: '05', name: 'Suite Adriatico',  detail: '2 guests · 40 m² · from €155/night' },
+      { latlng: [45.5138, 13.5915], num: '06', name: 'Villa Ostanek',    detail: '6 guests · 95 m² · from €245/night' }
+    ];
+
+    apts.forEach(function(a) {
+      L.marker(a.latlng, { icon: orange })
+        .addTo(map)
+        .bindPopup(
+          '<div class="map-popup-name">Apt ' + a.num + ' — ' + a.name + '</div>' +
+          '<div class="map-popup-detail">' + a.detail + '</div>'
+        );
+    });
+  </script>
 </body>
 </html>
